@@ -1,0 +1,101 @@
+<template>
+  <div class="category">
+    <div class="input_element">
+      <input type="text" v-model="categoryItem" @keydown.enter="addCategory()"/>
+      <button @click="addCategory()">add category</button>
+    </div>
+    <ul>
+      <li v-for="(category, index) in categorys" :key="index++">
+        <p>{{ category }}</p>
+      </li>
+    </ul>
+
+    <div class="category_filter">
+      <input type="text" id="category_filter" v-model="filterInput"/>
+      <label for="category_filter">Filtred by category</label>
+    </div>
+  </div>
+</template>
+
+<script>
+
+
+export default {
+  name: "CategoryBlock",
+  components: {},
+
+  data() {
+    return {
+      categorys: [],
+      categoryItem: "",
+      filterInput: ""
+    };
+  },
+
+  props: {
+    todoData: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+
+  watch: {
+    filterInput() {
+      this.$emit('filterUserInput', this.filterInput);
+    }
+  },
+
+  methods: {
+    addCategory() {
+      this.categorys.push(this.categoryItem);
+      this.$emit("addCategory", this.categoryItem);
+      this.categoryItem = "";
+    },
+  },
+};
+</script>
+
+<style>
+.category {
+  min-height: 50vh;
+  max-height: 95vh;
+  position: relative;
+  flex-grow: 1;
+  background-color: #fcaeae;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+.input_element {
+  padding: 20px;
+}
+
+.input_element input {
+  all: unset;
+  border-bottom: 1px solid black;
+  cursor: pointer;
+}
+
+.input_element button {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.category_filter {
+  position: absolute;
+  bottom: 0;
+  margin-top: 100%;
+  padding: 20px;
+}
+
+.category_filter input {
+  all: unset;
+  border-bottom: 1px solid black;
+}
+
+.category_filter label {
+  margin-left: 10px;
+}
+</style>
