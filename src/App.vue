@@ -1,74 +1,46 @@
 <template>
   <div class="container">
-    <category-block :todoData="todoList"
-                    @addCategory="showAddedCategory"
-                    @filterUserInput="setUserFilter"
+    <left-column
+        :todoData="todoList"
+        @addCategory="showAddedCategory"
+        @filterUserInput="setUserFilter"
     />
 
     <div class="wrapper">
       <label for="todo_id" class="todo_input_label"> Your current todo</label>
       <textarea class="todo_input" name="" id="todo_id" v-model="userInput">
       </textarea>
-      <button v-if="userInput.length > 2" v-on:click="add(userInput)">
+      <button class="add_btn" v-if="userInput.length > 2" v-on:click="add(userInput)">
         add...
       </button>
-      <div class="todo">
-        <ul class="todo_ul">
-          <div
-              class="todo_content"
-              v-for="t in filterByCategory"
-              :key="t.date"
-              @click="this.select = t"
-              :class="{ task_border: select === t }"
+      <div class="todo_wrapper">
+        <ul class="todo_list">
+          <li
+              class="todo"
+              v-for="todo in todoList"
+              :key="todo.date"
+              @click="this.select = todo"
+              :class="{ task_border: select === todo }"
           >
-            <p>{{ t.date }}</p>
+            <p>{{ todo.date }}</p>
             <p
                 class="task"
-                @click="t.isSelect = !t.isSelect"
-                :class="{ task_paragraph: t.isSelect }"
+                @click="todo.isSelect = !todo.isSelect"
+                :class="{ task_paragraph: todo.isSelect }"
             >
-              {{ t.task }}
+              {{ todo.task }}
             </p>
+
             <!--                        <input class="changed_todo_input" type="text" :value="t.task">-->
             <!----------  navigation  --------------->
-            <div class="navigation">
-              <button
-                  v-if="t.isSelect"
-                  v-on:click="remove(t)"
-                  :disabled="!t.isSelect"
-              >
-                <img
-                    title="удалить"
-                    class="remove_img"
-                    src="./images/deleted-file.svg"
-                    alt="удалить"
-                />
-              </button>
-
-              <button @click="changeTodo()">
-                <img
-                    title="редактировать"
-                    class="edit_img"
-                    src="./images/edit.svg"
-                    alt="редактирование"
-                />
-              </button>
-
-              <button @click="popUpNow()">
-                <img
-                    title="задать категорию"
-                    class="tags_img"
-                    src="./images/vertical-dots.svg" alt="tags">
-
-              </button>
-            </div>
-            <!----------//navigation  --------------->
-          </div>
+            <todo-navigation
+                :todoList="this.todoList"
+                :currentTodo="todo"/>
+          </li>
         </ul>
       </div>
     </div>
   </div>
-  <BlobMenu/>
 </template>
 
 //[] Размеры каждой todo должны быть через константы, (препроцесооры или что то
@@ -76,14 +48,14 @@
 редактирования задачи
 
 <script>
-import CategoryBlock from "./components/CategoryBlock";
-import BlobMenu from "./components/BlobMenu";
+import LeftColumn from "./components/LeftColumn";
+import TodoNavigation from "./components/TodoNavigation";
 
 export default {
   name: "App",
   components: {
-    CategoryBlock,
-    BlobMenu
+    LeftColumn,
+    TodoNavigation
   },
 
   data() {
@@ -94,7 +66,7 @@ export default {
         task: "",
         date: "",
         isSelect: false,
-        category: "default",
+        tag: "default",
       },
 
       todoList: [],
@@ -114,17 +86,18 @@ export default {
   watch: {
     filterInput: function () {
       return this.todoList.filter((todo) =>
-          todo.category.startsWith(this.filterInput)
+          todo.tag.startsWith(this.filterInput)
       );
     },
   },
 
   computed: {
-    filterByCategory() {
-      return this.todoList.filter((element) =>
-          element.category.startsWith(this.filterInput)
-      );
-    },
+    // filterByCategory() {
+    //   return this.todoList.filter((element) =>
+    //       element.tag.startsWith(this.filterInput)
+    //   );
+    //   // return this.todoList;
+    // },
   },
 
   methods: {
@@ -139,24 +112,18 @@ export default {
       this.userInput = "";
     },
 
-    remove(todo) {
-      this.todoList = this.todoList.filter((t) => t.task !== todo.task);
-      localStorage.setItem("todoLIst", JSON.stringify(this.todoList));
-    },
 
     showAddedCategory(value) {
       console.log("show", value);
     },
+
     setUserFilter(value) {
       this.filterInput = value;
+      console.log('value', value);
     },
-
-    popUpNow() {
-      console.log('popUPNOW');
-      return document.createElement('div');
-    }
   },
 };
+
 </script>
 
 <style>
@@ -191,11 +158,19 @@ export default {
   /*padding: 0 240px 0 10px;*/
 }
 
-.todo_ul {
+.add_btn {
+  margin: 5px 0 10px 0;
+}
+
+.todo_wrapper {
+
+}
+
+.todo_list {
   padding: 0;
 }
 
-.todo_content {
+.todo {
   position: relative;
   min-height: 120px;
   border: 1px solid darkgrey;
@@ -203,6 +178,7 @@ export default {
   margin-bottom: 10px;
   word-wrap: break-word;
   padding: 0 5px;
+  list-style: none;
 }
 
 .task_border {
@@ -218,36 +194,4 @@ export default {
   cursor: pointer;
 }
 
-.changed_todo_input {
-  all: unset;
-}
-
-.navigation {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  border-radius: 5px;
-  padding: 0 10px;
-
-  opacity: 1;
-}
-
-.navigation_active {
-  opacity: 1;
-}
-
-.remove_img {
-  width: 24px;
-  height: 24px;
-}
-
-.edit_img {
-  width: 24px;
-  height: 24px;
-}
-
-.tags_img {
-  width: 24px;
-  height: 24px;
-}
 </style>

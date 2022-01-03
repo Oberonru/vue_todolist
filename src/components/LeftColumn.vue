@@ -1,12 +1,12 @@
 <template>
-  <div class="category">
+  <div class="tag">
     <div class="input_element">
-      <input type="text" v-model="categoryItem" @keydown.enter="addCategory()"/>
-      <button @click="addCategory()">add category</button>
+      <input type="text" v-model="tag" @keydown.enter="addCategory()"/>
+      <button @click="addTag()">add tag</button>
     </div>
     <ul>
-      <li v-for="(category, index) in categorys" :key="index++">
-        <p>{{ category }}</p>
+      <li v-for="(tag, index) in tags" :key="index++">
+        <p>{{ tag }}</p>
       </li>
     </ul>
 
@@ -19,15 +19,14 @@
 
 <script>
 
-
 export default {
-  name: "CategoryBlock",
+  name: "LeftColumn",
   components: {},
 
   data() {
     return {
-      categorys: [],
-      categoryItem: "",
+      tags: [],
+      tag: "",
       filterInput: ""
     };
   },
@@ -48,17 +47,17 @@ export default {
   },
 
   methods: {
-    addCategory() {
-      this.categorys.push(this.categoryItem);
-      this.$emit("addCategory", this.categoryItem);
-      this.categoryItem = "";
+    addTag() {
+      this.tags.push(this.tag);
+      this.$emit("addCategory", this.tag);
+      this.tag = "";
     },
   },
 };
 </script>
 
 <style>
-.category {
+.tag {
   min-height: 50vh;
   max-height: 95vh;
   position: relative;
