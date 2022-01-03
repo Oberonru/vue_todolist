@@ -4,7 +4,7 @@
         v-if="currentTodo.isSelect"
     >
       <img
-          @click="remove(currentTodo)"
+          @click="remove()"
           title="удалить"
           class="remove_img"
           src="../images/deleted-file.svg"
@@ -44,6 +44,7 @@ export default {
       isTagsMenuActive: false
     }
   },
+
   props: {
     currentTodo: {
       type: Object,
@@ -58,12 +59,11 @@ export default {
       this.isTagsMenuActive = !this.isTagsMenuActive;
     },
 
-    addTag() {},
+    addTag() {
+    },
 
-    remove(todo) {
-      console.log('method remove');
-      this.todoList =  this.todoList.filter((t) => t.task !== todo.task);
-      localStorage.setItem("todoLIst", JSON.stringify(this.todoList));
+    remove() {
+      this.$emit('removeTodo', this.currentTodo);
     },
   }
 }

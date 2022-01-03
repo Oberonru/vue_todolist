@@ -34,7 +34,7 @@
             <!--                        <input class="changed_todo_input" type="text" :value="t.task">-->
             <!----------  navigation  --------------->
             <todo-navigation
-                :todoList="this.todoList"
+                @removeTodo="remove(todo)"
                 :currentTodo="todo"/>
           </li>
         </ul>
@@ -116,6 +116,12 @@ export default {
     showAddedCategory(value) {
       console.log("show", value);
     },
+
+    remove(todo) {
+      this.todoList = this.todoList.filter((t) => t.task !== todo.task);
+      localStorage.setItem("todoLIst", JSON.stringify(this.todoList));
+    },
+
 
     setUserFilter(value) {
       this.filterInput = value;
