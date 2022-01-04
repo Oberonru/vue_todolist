@@ -27,7 +27,9 @@
           class="tags_img"
           src="../images/vertical-dots.svg" alt="tags">
     </button>
-    <tag-menu v-if="isTagsMenuActive"/>
+    <tag-menu
+        @remove="remove"
+        v-if="isTagsMenuActive"/>
   </div>
 </template>
 

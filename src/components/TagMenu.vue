@@ -1,11 +1,8 @@
 <template>
   <ul class="list" v-if="!isTagSelect">
-    <li @click="addTag" class="li_item add">
-      Add tag
-    </li>
-    <li @click="changeTag" class="li_item">
-      Change tag
-    </li>
+    <li @click="addTag" class="li_item add">Add tag</li>
+    <li @click="changeTag" class="li_item">Change tag</li>
+    <li @click="remove" class="li_item">Remove todo</li>
   </ul>
   <add-tag-menu
       v-if="isTagSelect"/>
@@ -34,6 +31,9 @@ export default {
 
     changeTag() {
       console.log('change tag');
+    },
+    remove() {
+      this.$emit('remove');
     }
   }
 }
