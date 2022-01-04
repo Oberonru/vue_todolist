@@ -56,7 +56,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .tag {
   min-height: 50vh;
   max-height: 95vh;
