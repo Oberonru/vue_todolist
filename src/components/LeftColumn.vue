@@ -1,7 +1,7 @@
 <template>
   <div class="tag">
     <div class="input_element">
-      <input type="text" v-model="tag" @keydown.enter="addCategory()"/>
+      <input type="text" v-model="tag" @keydown.enter="addTag()"/>
       <button @click="addTag()">add tag</button>
     </div>
     <ul>
@@ -11,7 +11,7 @@
     </ul>
 
     <div class="category_filter">
-      <input type="text" id="category_filter" v-model="filterInput"/>
+      <input type="text" id="category_filter" v-model="filter"/>
       <label for="category_filter">Filtred by category</label>
     </div>
   </div>
@@ -27,12 +27,12 @@ export default {
     return {
       tags: [],
       tag: "",
-      filterInput: ""
+      filter: ""
     };
   },
 
   props: {
-    todoData: {
+    todoList: {
       type: Object,
       default() {
         return {};
@@ -41,8 +41,8 @@ export default {
   },
 
   watch: {
-    filterInput() {
-      this.$emit('filterUserInput', this.filterInput);
+    filter: function () {
+      this.$emit('getFilter', this.filter);
     }
   },
 

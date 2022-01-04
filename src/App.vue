@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <left-column
-        :todoData="todoList"
+        :todoList="todoList"
         @addCategory="showAddedCategory"
-        @filterUserInput="setUserFilter"
+        @getFilter="setFilterInput"
     />
 
     <div class="wrapper">
@@ -17,7 +17,7 @@
         <ul class="todo_list">
           <li
               class="todo"
-              v-for="todo in todoList"
+              v-for="todo in this.handleFilterValue()"
               :key="todo.date"
               @click="this.select = todo"
               :class="{ task_border: select === todo }"
@@ -83,22 +83,7 @@ export default {
     this.todoList = JSON.parse(localStorage.getItem("todoLIst")) ?? [];
   },
 
-  watch: {
-    filterInput: function () {
-      return this.todoList.filter((todo) =>
-          todo.tag.startsWith(this.filterInput)
-      );
-    },
-  },
-
-  computed: {
-    // filterByCategory() {
-    //   return this.todoList.filter((element) =>
-    //       element.tag.startsWith(this.filterInput)
-    //   );
-    //   // return this.todoList;
-    // },
-  },
+  computed: {},
 
   methods: {
     add() {
@@ -107,11 +92,10 @@ export default {
         task: this.userInput,
         date: new Date().toDateString(),
       });
+      console.log('todoList', this.todoList);
       localStorage.setItem("todoLIst", JSON.stringify(this.todoList));
-      console.log(this.todoList);
       this.userInput = "";
     },
-
 
     showAddedCategory(value) {
       console.log("show", value);
@@ -122,10 +106,13 @@ export default {
       localStorage.setItem("todoLIst", JSON.stringify(this.todoList));
     },
 
-
-    setUserFilter(value) {
+    setFilterInput(value) {
       this.filterInput = value;
-      console.log('value', value);
+    },
+
+    handleFilterValue() {
+      return this.todoList.filter((element) =>
+          element.tag.startsWith(this.filterInput));
     },
   },
 };
