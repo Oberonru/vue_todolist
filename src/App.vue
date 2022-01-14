@@ -7,11 +7,11 @@
     />
 
     <div class="wrapper">
-      <label for="todo_id" class="todo_input_label"> Your current todo</label>
+      <label for="todo_id" class="todo_input_label"> текущая задача</label>
       <textarea class="todo_input" name="" id="todo_id" v-model="userInput">
       </textarea>
       <button class="add_btn" v-if="userInput.length > 2" v-on:click="add(userInput)">
-        add...
+        добавить...
       </button>
       <div class="todo_wrapper">
         <ul class="todo_list">
@@ -87,7 +87,7 @@ export default {
 
   methods: {
     add() {
-      this.todoList.push({
+      this.todoList.unshift({
         ...this.todo,
         task: this.userInput,
         date: new Date().toDateString(),

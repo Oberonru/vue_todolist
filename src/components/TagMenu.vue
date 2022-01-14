@@ -1,8 +1,8 @@
 <template>
   <ul class="list" v-if="!isTagSelect">
-    <li @click="addTag" class="li_item add">Add tag</li>
-    <li @click="changeTag" class="li_item">Change tag</li>
-    <li @click="remove" class="li_item">Remove todo</li>
+    <li @click="addTag" class="li_item add">Добавить ярлык</li>
+    <li @click="changeTag" class="li_item">Изменить ярлык</li>
+    <li @click="remove" class="li_item">Удалить задачу</li>
   </ul>
   <add-tag-menu
       v-if="isTagSelect"/>

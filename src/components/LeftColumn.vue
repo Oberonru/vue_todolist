@@ -2,7 +2,7 @@
   <div class="tag">
     <div class="input_element">
       <input type="text" v-model="tag" @keydown.enter="addTag()"/>
-      <button @click="addTag()">add tag</button>
+      <button @click="addTag()">Добавить ярлык</button>
     </div>
     <ul>
       <li v-for="(tag, index) in tags" :key="index++">
@@ -12,7 +12,7 @@
 
     <div class="category_filter">
       <input type="text" id="category_filter" v-model="filter"/>
-      <label for="category_filter">Filtred by category</label>
+      <label for="category_filter">Фильтр по категориям</label>
     </div>
   </div>
 </template>
